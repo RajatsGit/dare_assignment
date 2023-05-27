@@ -16,4 +16,6 @@ const seatBookingSchema = new mongoose.Schema({
 
 const seatBookingModel = mongoose.model("seatBooking",seatBookingSchema)
 
+ 
+
 module.exports = seatBookingModel;

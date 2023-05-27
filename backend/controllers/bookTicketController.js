@@ -1,35 +1,32 @@
 const SeatModel = require('../models/seatBooking')
 
 const bookTicketController =async(req,res)=>{
+
+    
+    
     try {
-
         // Check if there are any seats in the database
-  const existingSeats = await Seat.find();
-  if (existingSeats.length === 0) {
-    // If no seats exist, create 80 default seats
-    const defaultSeats = [];
-    for (let i = 1; i <= 80; i++) {
-      defaultSeats.push({ seatNumber: `Seat ${i}` });
-    }
-    Seat.insertMany(defaultSeats)
-      .then(() => {
-        console.log('Default seats added successfully');
-      })
-      .catch((error) => {
-        console.error('Error adding default seats:', error);
-      });
-  }
-
-
-
-
-
+        const existingSeats = await SeatModel.find();
+        if (existingSeats.length === 0) {
+          // If no seats exist, created 80 default seats
+      const defaultSeats = [];
+      for (let i = 1; i <= 80; i++) {
+        defaultSeats.push({ seatNumber: i, isBooked:false });
+      }
+      SeatModel.insertMany(defaultSeats)
+        .then(() => {
+          console.log('Default seats added successfully');
+        })
+        .catch((error) => {
+          console.error('Error adding default seats:', error);
+        });
+        }
 
         // Number of seats that user requested
         const numberOfSeats = req.body.numberOfSeats;
 
         // These are the number of avlaible seats starting acsending order of seats
-        const availableSeats = SeatModel.find({isBooked:false});
+        const availableSeats = await SeatModel.find({isBooked:false});
 
         // Check if requested seats are avaliable or not
         if(availableSeats.length >= numberOfSeats){
@@ -42,9 +39,10 @@ const bookTicketController =async(req,res)=>{
             })
 
             return(
-                res.status(200).send({
+                res.status(201).send({
                     success:true,
-                    message:'Seats Booked Succesfully'
+                    message:'Seats Booked Succesfully',
+                    data:bookedSeats
                 })
             )
 
