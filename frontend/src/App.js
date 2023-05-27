@@ -11,7 +11,7 @@ function App() {
  const handleBookTickets =async(e)=>{
   e.preventDefault();
   try {
-    const response = await axios.post('http://localhost:5000/api/seat/bookTickets',{
+    const response = await axios.post('https://unstop-assignment-backend.onrender.com/api/seat/bookTickets',{
       numberOfSeats
     });
     if(response.data.success){
